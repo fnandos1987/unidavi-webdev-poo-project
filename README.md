@@ -1,6 +1,6 @@
 # unidavi-webdev-poo-project
 
-## Execução do projeto de Novembro 2017 (projeto feito no NetBeans):
+## Execução do projeto de Novembro 2017:
 * Descompactar o arquivo Oscar.zip;
 * Configurar o Tomcat no projeto;
 * Criar uma nova base de dados PotsgreSQL chamada 'oscar';
