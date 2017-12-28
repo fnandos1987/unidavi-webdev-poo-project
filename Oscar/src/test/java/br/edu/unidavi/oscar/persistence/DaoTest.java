@@ -42,15 +42,13 @@ public class DaoTest {
     @Test
     public void testGetAllByQuery() {
         ResultSet set = dao.getAllByQuery("select * from categoria");
-        assertNotEquals(null, set);
+        assertNotSame(null, set);
     }
     
     @Test
     public void testGetAllByQueryWithParameters(){
         Integer cod = 1;
         ResultSet set = dao.getAllByQueryWithParameters("select * from categoria where catcodigo = ?", cod);   
-        assertNotEquals(null, set);
-    }
-    
-    
+        assertNotSame(null, set);
+    }   
 }

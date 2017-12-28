@@ -18,22 +18,22 @@ import static org.junit.Assert.*;
  * @author fernando.schwambach
  */
 public class ConexaoTest {
-    
+
     public ConexaoTest() {
     }
-    
+
     @BeforeClass
     public static void setUpClass() {
     }
-    
+
     @AfterClass
     public static void tearDownClass() {
     }
-    
+
     @Before
     public void setUp() {
     }
-    
+
     @After
     public void tearDown() {
     }
@@ -41,7 +41,6 @@ public class ConexaoTest {
     @Test
     public void testGetConnection() {
         Connection connectBd = Conexao.getInstance().getConnection();
-        assertNotEquals(null, connectBd);        
+        assertNotSame(null, connectBd);
     }
-    
 }
