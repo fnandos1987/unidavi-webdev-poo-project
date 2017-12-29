@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 public class DetalharElenco extends Action {
 
     @Override
-    public String execute(HttpServletRequest req, HttpServletResponse res) throws Exception {
+    public String execute(HttpServletRequest req, HttpServletResponse res) {
         Integer filCodigo = Integer.parseInt(req.getParameter("filcodigo"));
         
         req.setAttribute("elenco", new ElencoDao(super.getConnection(req)).findAllByFilme(filCodigo));

@@ -18,9 +18,8 @@ public class Dao {
     }
 
     protected Boolean execute(String sql, Object... parametros) {
-        try {
-            PreparedStatement pstmt = getConnection().prepareStatement(sql);
-
+        try (PreparedStatement pstmt = getConnection().prepareStatement(sql)) {
+            
             for (int i = 0; i < parametros.length; i++) {
                 pstmt.setObject(i + 1, parametros[i]);
             }
@@ -29,48 +28,47 @@ public class Dao {
             pstmt.close();
             return true;
         } catch (SQLException e) {
-            e.printStackTrace();
             return false;
         }
     }
 
     protected int getSequence(String table, String column) {
-        try {
-            String sql = "select coalesce(max(" + column + ")) + 1 as sequence from from " + table;
-            PreparedStatement pstmt = getConnection().prepareStatement(sql);
-            ResultSet rs = pstmt.executeQuery();
+        StringBuilder sql = new StringBuilder("select");
+        sql.append("coalesce(max(");
+        sql.append(column);
+        sql.append(")) + 1 as sequence from from");
+        sql.append(table);
+        
+        try (PreparedStatement pstmt = getConnection().prepareStatement(sql.toString()); ResultSet rs = pstmt.executeQuery()) {
             while (rs.next()) {
                 return rs.getInt("sequence");
             }
         } catch (SQLException e) {
-            e.printStackTrace();
         }
         return 0;
     }
 
     protected ResultSet getAllByQuery(String sql) {
         ResultSet resul = null;
-        try {
-            PreparedStatement pstmt = getConnection().prepareStatement(sql);
+        try (PreparedStatement pstmt = getConnection().prepareStatement(sql)) {
             resul = pstmt.executeQuery();
+            pstmt.close();
         } catch (Exception ex) {
-            ex.printStackTrace();
         }
         return resul;
     }
 
     protected ResultSet getAllByQueryWithParameters(String sql, Object... parametros) {
         ResultSet resul = null;
-        try {
-            PreparedStatement pstmt = getConnection().prepareStatement(sql);
+        try (PreparedStatement pstmt = getConnection().prepareStatement(sql)) {
 
             for (int i = 0; i < parametros.length; i++) {
                 pstmt.setObject(i + 1, parametros[i]);
             }
 
             resul = pstmt.executeQuery();
+            pstmt.close();
         } catch (Exception ex) {
-            ex.printStackTrace();
         }
         return resul;
     }

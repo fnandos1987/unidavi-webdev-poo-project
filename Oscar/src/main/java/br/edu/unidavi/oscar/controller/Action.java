@@ -13,11 +13,11 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author fernando.schwambach
  */
-abstract public class Action {
+public abstract class Action {
+    
+    public abstract String execute(HttpServletRequest req, HttpServletResponse res);
     
     protected Connection getConnection(HttpServletRequest req){
         return (Connection) req.getAttribute("conexao");        
-    }    
-    
-    abstract public String execute(HttpServletRequest req, HttpServletResponse res) throws Exception;
+    }       
 }

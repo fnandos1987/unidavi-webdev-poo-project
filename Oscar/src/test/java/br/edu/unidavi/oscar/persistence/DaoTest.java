@@ -51,4 +51,10 @@ public class DaoTest {
         ResultSet set = dao.getAllByQueryWithParameters("select * from categoria where catcodigo = ?", cod);   
         assertNotSame(null, set);
     }   
+    
+    @Test
+    public void testGetSequence() {
+        Integer resul = dao.getSequence("categoria", "catcodigo");
+        assertNotSame(new Integer("0"), resul);
+    }    
 }

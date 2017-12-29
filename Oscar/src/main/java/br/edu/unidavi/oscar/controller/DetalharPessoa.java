@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 public class DetalharPessoa extends Action {
 
     @Override
-    public String execute(HttpServletRequest req, HttpServletResponse res) throws Exception {
+    public String execute(HttpServletRequest req, HttpServletResponse res) {
         Integer pesCodigo = Integer.parseInt(req.getParameter("pescodigo"));
         
         req.setAttribute("pessoa", new PessoaDao(super.getConnection(req)).findById(pesCodigo));

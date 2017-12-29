@@ -5,9 +5,12 @@ import java.util.ArrayList;
 
 import br.edu.unidavi.oscar.model.Categoria;
 import java.sql.Connection;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-public class CategoriaDao extends Dao implements IDao<Integer, Categoria> {       
-    
+public class CategoriaDao extends Dao implements IDao<Integer, Categoria> {
+
+    private static final Logger LOGGER = Logger.getLogger(Dao.class.getName());
     private final String SELECT = "select * from categoria order by catcodigo";
     private final String INSERT = "insert into categoria(catcodigo, descricao) values (?,?)";
     private final String UPDATE = "update categoria set descricao = ? where catcodigo = ?";
@@ -46,7 +49,7 @@ public class CategoriaDao extends Dao implements IDao<Integer, Categoria> {
                 }
             }
         } catch (Exception ex) {
-            ex.printStackTrace();
+            LOGGER.log(Level.SEVERE, ex.toString(), ex);
         }
 
         return array;

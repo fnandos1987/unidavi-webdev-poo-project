@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 public class ListarVencedores extends Action {
 
     @Override
-    public String execute(HttpServletRequest req, HttpServletResponse res) throws Exception {
+    public String execute(HttpServletRequest req, HttpServletResponse res) {
 
         req.setAttribute("vencedores", new VencedorDao(super.getConnection(req)).findAll());
 

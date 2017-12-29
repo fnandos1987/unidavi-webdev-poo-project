@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 public class ListarCategoria extends Action {
 
     @Override
-    public String execute(HttpServletRequest req, HttpServletResponse res) throws Exception {
+    public String execute(HttpServletRequest req, HttpServletResponse res) {
         
         ArrayList<Categoria> lista = new CategoriaDao(super.getConnection(req)).findAll();
 
