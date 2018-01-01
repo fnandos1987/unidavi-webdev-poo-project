@@ -10,7 +10,6 @@ import java.util.logging.Logger;
 
 public class CategoriaDao extends Dao implements IDao<Integer, Categoria> {
 
-    private static final Logger LOGGER = Logger.getLogger(Dao.class.getName());
     private final String SELECT = "select * from categoria order by catcodigo";
     private final String INSERT = "insert into categoria(catcodigo, descricao) values (?,?)";
     private final String UPDATE = "update categoria set descricao = ? where catcodigo = ?";
@@ -22,7 +21,9 @@ public class CategoriaDao extends Dao implements IDao<Integer, Categoria> {
 
     @Override
     public Boolean save(Categoria entity) {
-        entity.setCatCodigo(getSequence("CATEGORIA", "catcodigo"));
+        if(entity.getCatCodigo() == null){
+            entity.setCatCodigo(getSequence("CATEGORIA", "catcodigo"));
+        }
         return execute(this.INSERT, entity.getCatCodigo(), entity.getDescricao());
     }
 
@@ -49,7 +50,7 @@ public class CategoriaDao extends Dao implements IDao<Integer, Categoria> {
                 }
             }
         } catch (Exception ex) {
-            LOGGER.log(Level.SEVERE, ex.toString(), ex);
+            Logger.getLogger(Dao.class.getName()).log(Level.SEVERE, ex.toString(), ex);
         }
 
         return array;
