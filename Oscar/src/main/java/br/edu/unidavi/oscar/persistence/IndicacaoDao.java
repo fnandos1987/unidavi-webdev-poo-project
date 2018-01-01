@@ -14,13 +14,16 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author fernando.schwambach
  */
 public class IndicacaoDao extends Dao implements IDao<IndicacaoPk, Indicacao> {
-    
+
+    private static final Logger LOGGER = Logger.getLogger(IndicacaoDao.class.getName());
     private final String INSERT = "insert into indicacao(ano, catcodigo, filcodigo) values (?,?,?)";
     private final String DELETE = "delete from indicacao where ano = ? and catcodigo = ? and filcodigo = ?";
 
@@ -45,29 +48,12 @@ public class IndicacaoDao extends Dao implements IDao<IndicacaoPk, Indicacao> {
 
     @Override
     public ArrayList<Indicacao> findAll() {
-        ArrayList<Indicacao> array = new ArrayList<>();
+        StringBuilder sql = this.getSqlBase();
+        sql.append("order by indicacao.filcodigo");
 
-        String sql = "select indicacao.ano,"
-                + "          categoria.catcodigo,"
-                + "          categoria.descricao,"
-                + "          filme.filcodigo,"
-                + "          filme.titulo," 
-                + "          pessoa.pescodigo," 
-                + "          pessoa.nome" 
-                + "     from indicacao"
-                + "     join categoria"
-                + "       on categoria.catcodigo = indicacao.catcodigo"
-                + "     join filme"
-                + "       on filme.filcodigo = indicacao.filcodigo "
-                + "     left join indicacaoelenco"
-                + "       on indicacaoelenco.ano = indicacao.ano "
-                + "      and indicacaoelenco.filcodigo = indicacao.filcodigo "
-                + "      and indicacaoelenco.catcodigo = indicacao.catcodigo "
-                + "     left join pessoa"
-                + "       on pessoa.pescodigo = indicacaoelenco.pescodigo "
-                + "    order by indicacao.filcodigo";
+        ArrayList<Indicacao> array = new ArrayList<>();
         try {
-            ResultSet rs = super.getAllByQuery(sql);
+            ResultSet rs = super.getAllByQuery(sql.toString());
             while (rs.next()) {
                 Categoria categoria = new Categoria(rs.getInt("catcodigo"), rs.getString("descricao"));
                 Filme filme = new Filme(rs.getInt("filcodigo"), rs.getString("titulo"));
@@ -76,6 +62,7 @@ public class IndicacaoDao extends Dao implements IDao<IndicacaoPk, Indicacao> {
                 array.add(new Indicacao(pk, pessoa));
             }
         } catch (SQLException ex) {
+            LOGGER.log(Level.SEVERE, ex.toString(), ex);
         }
         return array;
     }
@@ -84,39 +71,23 @@ public class IndicacaoDao extends Dao implements IDao<IndicacaoPk, Indicacao> {
     public Indicacao findById(IndicacaoPk id) {
         Indicacao indicacao = new Indicacao();
         try {
-            String sql = "select indicacao.ano,"
-                + "          categoria.catcodigo,"
-                + "          categoria.descricao,"
-                + "          filme.filcodigo,"
-                + "          filme.titulo," 
-                + "          pessoa.pescodigo," 
-                + "          pessoa.nome" 
-                + "     from indicacao"
-                + "     join categoria"
-                + "       on categoria.catcodigo = indicacao.catcodigo"
-                + "     join filme"
-                + "       on filme.filcodigo = indicacao.filcodigo "
-                + "     left join indicacaoelenco"
-                + "       on indicacaoelenco.ano = indicacao.ano "
-                + "      and indicacaoelenco.filcodigo = indicacao.filcodigo "
-                + "      and indicacaoelenco.catcodigo = indicacao.catcodigo "
-                + "     left join pessoa"
-                + "       on pessoa.pescodigo = indicacaoelenco.pescodigo "
-                + "    where indicacao.ano = ? "
-                + "      and indicacao.catcodigo"
-                + "      and indicacao.filcodigo";
-            
-            ResultSet rs = super.getAllByQueryWithParameters(sql, id.getAno(), id.getCategoria().getCatCodigo(), id.getFilme().getFilCodigo());
+            StringBuilder sql = this.getSqlBase();
+            sql.append("where indicacao.ano = ? ");
+            sql.append("and indicacao.catcodigo = ?");
+            sql.append("and indicacao.filcodigo = ?");
+
+            ResultSet rs = super.getAllByQueryWithParameters(sql.toString(), id.getAno(), id.getCategoria().getCatCodigo(), id.getFilme().getFilCodigo());
             while (rs.next()) {
                 Categoria categoria = new Categoria(rs.getInt("catcodigo"), rs.getString("descricao"));
                 Filme filme = new Filme(rs.getInt("filcodigo"), rs.getString("titulo"));
                 Pessoa pessoa = new Pessoa(rs.getInt("pescodigo"), rs.getString("nome"));
                 IndicacaoPk pk = new IndicacaoPk(rs.getShort("ano"), categoria, filme);
-                
+
                 indicacao.setPk(pk);
                 indicacao.setPessoa(pessoa);
             }
         } catch (SQLException ex) {
+            LOGGER.log(Level.SEVERE, ex.toString(), ex);
         }
         return indicacao;
     }
@@ -124,28 +95,11 @@ public class IndicacaoDao extends Dao implements IDao<IndicacaoPk, Indicacao> {
     public ArrayList<Indicacao> findAllByCategoria(Integer catCodigo) {
         ArrayList<Indicacao> array = new ArrayList<>();
 
-        String sql = "select indicacao.ano,"
-                + "          categoria.catcodigo,"
-                + "          categoria.descricao,"
-                + "          filme.filcodigo,"
-                + "          filme.titulo," 
-                + "          pessoa.pescodigo," 
-                + "          pessoa.nome" 
-                + "     from indicacao"
-                + "     join categoria"
-                + "       on categoria.catcodigo = indicacao.catcodigo"
-                + "     join filme"
-                + "       on filme.filcodigo = indicacao.filcodigo "
-                + "     left join indicacaoelenco"
-                + "       on indicacaoelenco.ano = indicacao.ano "
-                + "      and indicacaoelenco.filcodigo = indicacao.filcodigo "
-                + "      and indicacaoelenco.catcodigo = indicacao.catcodigo "
-                + "     left join pessoa"
-                + "       on pessoa.pescodigo = indicacaoelenco.pescodigo "
-                + "    where indicacao.catcodigo = ? "
-                + "    order by indicacao.filcodigo";
+        StringBuilder sql = this.getSqlBase();
+        sql.append("where indicacao.catcodigo = ?");
+        sql.append("order by indicacao.filcodigo");
         try {
-            ResultSet rs = super.getAllByQueryWithParameters(sql, catCodigo);
+            ResultSet rs = super.getAllByQueryWithParameters(sql.toString(), catCodigo);
             while (rs.next()) {
                 Categoria categoria = new Categoria(rs.getInt("catcodigo"), rs.getString("descricao"));
                 Filme filme = new Filme(rs.getInt("filcodigo"), rs.getString("titulo"));
@@ -154,7 +108,30 @@ public class IndicacaoDao extends Dao implements IDao<IndicacaoPk, Indicacao> {
                 array.add(new Indicacao(pk, pessoa));
             }
         } catch (SQLException ex) {
+            LOGGER.log(Level.SEVERE, ex.toString(), ex);
         }
         return array;
+    }
+
+    private StringBuilder getSqlBase() {
+        StringBuilder sql = new StringBuilder("select indicacao.ano,");
+        sql.append("categoria.catcodigo,");
+        sql.append("categoria.descricao,");
+        sql.append("filme.filcodigo,");
+        sql.append("filme.titulo,");
+        sql.append("pessoa.pescodigo,");
+        sql.append("pessoa.nome");
+        sql.append("from indicacao");
+        sql.append("join categoria");
+        sql.append("on categoria.catcodigo = indicacao.catcodigo");
+        sql.append("join filme");
+        sql.append("on filme.filcodigo = indicacao.filcodigo");
+        sql.append("left join indicacaoelenco");
+        sql.append("on indicacaoelenco.ano = indicacao.ano");
+        sql.append("and indicacaoelenco.filcodigo = indicacao.filcodigo");
+        sql.append("and indicacaoelenco.catcodigo = indicacao.catcodigo");
+        sql.append("left join pessoa");
+        sql.append("on pessoa.pescodigo = indicacaoelenco.pescodigo");
+        return sql;
     }
 }

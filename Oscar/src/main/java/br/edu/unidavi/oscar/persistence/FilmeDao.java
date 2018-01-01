@@ -5,6 +5,8 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -12,6 +14,8 @@ import java.util.ArrayList;
  */
 public class FilmeDao extends Dao implements IDao<Integer, Filme> {
     
+    private static final Logger LOGGER = Logger.getLogger(FilmeDao.class.getName());
+    private final String FILCODIGO = "filcodigo";
     private final String SELECT = "select * from filme order by filcodigo";
     private final String INSERT = "insert into filme(filcodigo, titulo, genero, paisorigem, estreia, duracao, sinopse) values (?,?,?,?,?,?,?)";
     private final String UPDATE = "update filme set titulo = ?, genero = ?, paisorigem = ?, estreia = ?, duracao = ?, sinopse = ? where filcodigo = ?";
@@ -23,7 +27,7 @@ public class FilmeDao extends Dao implements IDao<Integer, Filme> {
 
     @Override
     public Boolean save(Filme entity) {
-        entity.setFilCodigo(getSequence("filme", "filcodigo"));
+        entity.setFilCodigo(getSequence("filme", FILCODIGO));
         return execute(this.INSERT, entity.getFilCodigo(), entity.getTitulo(), entity.getGenero(), entity.getPaisOrigem(), entity.getEstreia(), entity.getDuracao(), entity.getSinopse());
     }
 
@@ -45,13 +49,13 @@ public class FilmeDao extends Dao implements IDao<Integer, Filme> {
             ResultSet rs = getAllByQuery(SELECT);
             if (rs instanceof ResultSet) {
                 while (rs.next()) {
-                    array.add(new Filme(rs.getInt("filcodigo"), rs.getString("titulo"), rs.getShort("genero"), rs.getString("paisorigem"), 
+                    array.add(new Filme(rs.getInt(FILCODIGO), rs.getString("titulo"), rs.getShort("genero"), rs.getString("paisorigem"), 
                                         rs.getDate("estreia"), rs.getShort("duracao"), rs.getString("sinopse")));
 
                 }
             }
         } catch (SQLException ex) {
-            ex.printStackTrace();
+            LOGGER.log(Level.SEVERE, ex.toString(), ex);
         }
 
         return array;
@@ -64,7 +68,7 @@ public class FilmeDao extends Dao implements IDao<Integer, Filme> {
             ResultSet rs = getAllByQuery(SELECT);
             if (rs instanceof ResultSet) {
                 while (rs.next()) {
-                    filme.setFilCodigo(rs.getInt("filcodigo"));
+                    filme.setFilCodigo(rs.getInt(FILCODIGO));
                     filme.setTitulo(rs.getString("titulo"));
                     filme.setGenero(rs.getShort("genero"));
                     filme.setPaisOrigem(rs.getString("paisorigem"));
@@ -74,7 +78,7 @@ public class FilmeDao extends Dao implements IDao<Integer, Filme> {
                 }
             }
         } catch (SQLException ex) {
-            ex.printStackTrace();
+            LOGGER.log(Level.SEVERE, ex.toString(), ex);
         }
         return filme;
     }    

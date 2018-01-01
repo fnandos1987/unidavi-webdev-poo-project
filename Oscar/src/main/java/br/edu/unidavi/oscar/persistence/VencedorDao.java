@@ -12,7 +12,10 @@ import br.edu.unidavi.oscar.model.Vencedor;
 import br.edu.unidavi.oscar.model.VencedorPk;
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -20,51 +23,52 @@ import java.util.ArrayList;
  */
 public class VencedorDao extends Dao implements IDao<VencedorPk, Vencedor> {
 
+    private static final Logger LOGGER = Logger.getLogger(VencedorDao.class.getName());
+    
     public VencedorDao(Connection connection) {
         super(connection);
     }
 
     @Override
     public Boolean save(Vencedor entity) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException(NOTSUPPORTED); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public Boolean update(Vencedor entity) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        throw new UnsupportedOperationException(NOTSUPPORTED);
     }
 
     @Override
     public Boolean delete(Vencedor entity) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException(NOTSUPPORTED); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public ArrayList<Vencedor> findAll() {
         ArrayList<Vencedor> array = new ArrayList<>();
-
-        String sql = "select vencedor.ano,"
-                + "          categoria.catcodigo,"
-                + "          categoria.descricao,"
-                + "          filme.filcodigo,"
-                + "          filme.titulo,"
-                + "          pessoa.pescodigo,"
-                + "          pessoa.nome"
-                + "     from vencedor"
-                + "     join categoria"
-                + "       on categoria.catcodigo = vencedor.catcodigo"
-                + "     join filme"
-                + "       on filme.filcodigo = vencedor.filcodigo "
-                + "     left join indicacaoelenco"
-                + "       on indicacaoelenco.ano = vencedor.ano "
-                + "      and indicacaoelenco.filcodigo = vencedor.filcodigo "
-                + "      and indicacaoelenco.catcodigo = vencedor.catcodigo "
-                + "     left join pessoa"
-                + "       on pessoa.pescodigo = indicacaoelenco.pescodigo "
-                + "    order by vencedor.ano, vencedor.catcodigo";
+        StringBuilder sql = new StringBuilder("select vencedor.ano,");
+        sql.append("categoria.catcodigo,");
+        sql.append("categoria.descricao,");
+        sql.append("filme.filcodigo,");
+        sql.append("filme.titulo,");
+        sql.append("pessoa.pescodigo,");
+        sql.append("pessoa.nome");
+        sql.append("from vencedor");
+        sql.append("join categoria");
+        sql.append("on categoria.catcodigo = vencedor.catcodigo");
+        sql.append("join filme");
+        sql.append("on filme.filcodigo = vencedor.filcodigo");
+        sql.append("left join indicacaoelenco");
+        sql.append("on indicacaoelenco.ano = vencedor.ano");
+        sql.append("and indicacaoelenco.filcodigo = vencedor.filcodigo");
+        sql.append("and indicacaoelenco.catcodigo = vencedor.catcodigo");
+        sql.append("left join pessoa");
+        sql.append("on pessoa.pescodigo = indicacaoelenco.pescodigo");
+        sql.append("order by vencedor.ano, vencedor.catcodigo");
 
         try {
-            ResultSet rs = getAllByQuery(sql);
+            ResultSet rs = getAllByQuery(sql.toString());
             if (rs instanceof ResultSet) {
                 while (rs.next()) {
                     Categoria categoria = new Categoria(rs.getInt("catcodigo"), rs.getString("descricao"));
@@ -74,8 +78,8 @@ public class VencedorDao extends Dao implements IDao<VencedorPk, Vencedor> {
                     array.add(new Vencedor(pk, pessoa));
                 }
             }
-        } catch (Exception ex) {
-            ex.printStackTrace();
+        } catch (SQLException ex) {
+            LOGGER.log(Level.SEVERE, ex.toString(), ex);
         }
 
         return array;
@@ -83,6 +87,6 @@ public class VencedorDao extends Dao implements IDao<VencedorPk, Vencedor> {
 
     @Override
     public Vencedor findById(VencedorPk object) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException(NOTSUPPORTED); //To change body of generated methods, choose Tools | Templates.
     }
 }

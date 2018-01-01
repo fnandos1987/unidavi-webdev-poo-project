@@ -44,17 +44,16 @@ public class ConnnectionFilter implements Filter {
         } catch (SQLException e) {
             throw new ServletException(e);
         }
-
     }
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-        
+        throw new UnsupportedOperationException("Not supported yet.");        
     }
 
     @Override
     public void destroy() {
-        
+        throw new UnsupportedOperationException("Not supported yet.");        
     }
 
 }

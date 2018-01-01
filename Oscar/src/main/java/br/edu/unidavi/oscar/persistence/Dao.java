@@ -4,9 +4,13 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Dao {
 
+    public static final String NOTSUPPORTED = "Not supported yet.";
+    private static final Logger LOGGER = Logger.getLogger(Dao.class.getName());
     private final Connection connection;
 
     protected Dao(Connection connection) {
@@ -27,7 +31,8 @@ public class Dao {
             pstmt.execute();
             pstmt.close();
             return true;
-        } catch (SQLException e) {
+        } catch (SQLException ex) {
+            LOGGER.log(Level.SEVERE, ex.toString(), ex);
             return false;
         }
     }
@@ -43,7 +48,8 @@ public class Dao {
             while (rs.next()) {
                 return rs.getInt("sequence");
             }
-        } catch (SQLException e) {
+        } catch (SQLException ex) {
+            LOGGER.log(Level.SEVERE, ex.toString(), ex);
         }
         return 0;
     }
@@ -54,6 +60,7 @@ public class Dao {
             resul = pstmt.executeQuery();
             pstmt.close();
         } catch (Exception ex) {
+            LOGGER.log(Level.SEVERE, ex.toString(), ex);
         }
         return resul;
     }
@@ -69,6 +76,7 @@ public class Dao {
             resul = pstmt.executeQuery();
             pstmt.close();
         } catch (Exception ex) {
+            LOGGER.log(Level.SEVERE, ex.toString(), ex);
         }
         return resul;
     }

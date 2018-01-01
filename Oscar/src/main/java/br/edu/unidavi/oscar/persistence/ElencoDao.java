@@ -13,6 +13,8 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -20,51 +22,53 @@ import java.util.ArrayList;
  */
 public class ElencoDao extends Dao implements IDao<ElencoPk, Elenco>{
 
+    private static final Logger LOGGER = Logger.getLogger(ElencoDao.class.getName());
+    
     public ElencoDao(Connection connection) {
         super(connection);
     }
 
     @Override
     public Boolean save(Elenco entity) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException(NOTSUPPORTED); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public Boolean update(Elenco entity) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException(NOTSUPPORTED); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public Boolean delete(Elenco entity) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException(NOTSUPPORTED); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public ArrayList<Elenco> findAll() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException(NOTSUPPORTED); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public Elenco findById(ElencoPk id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException(NOTSUPPORTED); //To change body of generated methods, choose Tools | Templates.
     }
     
     public ArrayList<Elenco> findAllByFilme(Integer filCodigo) {
+        StringBuilder sql = new StringBuilder("select filme.filcodigo,");
+        sql.append("filme.titulo,");
+        sql.append("pessoa.pescodigo,");
+        sql.append("pessoa.nome");
+        sql.append("from elenco");
+        sql.append("join filme");
+        sql.append("on filme.filcodigo = elenco.filcodigo");
+        sql.append("join pessoa");
+        sql.append("on pessoa.pescodigo = elenco.pescodigo");
+        sql.append("where elenco.filcodigo = ?");
+        sql.append("order by pessoa.pescodigo");
+        
         ArrayList<Elenco> array = new ArrayList<>();
-
-        String sql = "select filme.filcodigo,"
-                + "          filme.titulo," 
-                + "          pessoa.pescodigo," 
-                + "          pessoa.nome" 
-                + "     from elenco"
-                + "     join filme"
-                + "       on filme.filcodigo = elenco.filcodigo "                
-                + "     join pessoa"
-                + "       on pessoa.pescodigo = elenco.pescodigo "
-                + "    where elenco.filcodigo = ? "
-                + "    order by pessoa.pescodigo";
         try {
-            ResultSet rs = super.getAllByQueryWithParameters(sql, filCodigo);
+            ResultSet rs = super.getAllByQueryWithParameters(sql.toString(), filCodigo);
             while (rs.next()) {
                 Filme filme = new Filme(rs.getInt("filcodigo"), rs.getString("titulo"));
                 Pessoa pessoa = new Pessoa(rs.getInt("pescodigo"), rs.getString("nome"));
@@ -72,6 +76,7 @@ public class ElencoDao extends Dao implements IDao<ElencoPk, Elenco>{
                 array.add(new Elenco(pk));
             }
         } catch (SQLException ex) {
+            LOGGER.log(Level.SEVERE, ex.toString(), ex);
         }
         return array;
     }    
