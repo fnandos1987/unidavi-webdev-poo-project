@@ -9,7 +9,6 @@ import br.edu.unidavi.oscar.model.Categoria;
 import br.edu.unidavi.oscar.util.Conexao;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.junit.After;
@@ -54,7 +53,7 @@ public class CategoriaDaoTest {
 
     @Test
     public void testSave() {
-        Categoria entity = new Categoria(Integer.MAX_VALUE, "Categoria Teste");
+        Categoria entity = new Categoria(0, "Categoria Teste");
         CategoriaDao instance = new CategoriaDao(conn);
         Boolean result = instance.save(entity);
         assertEquals(true, result);
@@ -62,7 +61,7 @@ public class CategoriaDaoTest {
 
     @Test
     public void testUpdate() {        
-        Categoria entity = new Categoria(Integer.MAX_VALUE, "Categoria Teste1");
+        Categoria entity = new Categoria(0, "Categoria Teste1");
         CategoriaDao instance = new CategoriaDao(conn);
         Boolean result = instance.update(entity);
         assertEquals(true, result);
@@ -70,7 +69,7 @@ public class CategoriaDaoTest {
 
     @Test
     public void testDelete() {
-        Categoria entity = new Categoria(Integer.MAX_VALUE, "Categoria Teste");
+        Categoria entity = new Categoria(0, "Categoria Teste");
         CategoriaDao instance = new CategoriaDao(conn);
         Boolean result = instance.delete(entity);
         assertEquals(true, result);
