@@ -14,14 +14,10 @@ import java.util.Objects;
  */
 public class Elenco implements Serializable {
 
-    /**
-     * serialVersionUID.
-     */
+    
     private static final long serialVersionUID = 1L;
     
-    /**
-     * pk
-     */
+   
     private ElencoPk pk;
 
     public Elenco() {
@@ -41,7 +37,7 @@ public class Elenco implements Serializable {
 
     @Override
     public int hashCode() {
-        int hash = 3;
+        int hash = 7;
         hash = 41 * hash + Objects.hashCode(this.pk);
         return hash;
     }
@@ -58,10 +54,8 @@ public class Elenco implements Serializable {
             return false;
         }
         final Elenco other = (Elenco) obj;
-        if (!Objects.equals(this.pk, other.pk)) {
-            return false;
-        }
-        return true;
+        return Objects.equals(this.pk, other.pk);
     }
+    
     
 }

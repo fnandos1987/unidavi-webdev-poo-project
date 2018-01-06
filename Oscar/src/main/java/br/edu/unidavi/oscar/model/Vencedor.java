@@ -72,10 +72,7 @@ public class Vencedor implements Serializable {
             return false;
         }
         final Vencedor other = (Vencedor) obj;
-        if (!Objects.equals(this.pk, other.pk)) {
-            return false;
-        }
-        return true;
+        return Objects.equals(this.pk, other.pk);
     }
 
 }

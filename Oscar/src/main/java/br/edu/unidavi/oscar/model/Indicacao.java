@@ -10,32 +10,13 @@ import java.util.Set;
  * @author fernando.schwambach
  */
 public class Indicacao implements Serializable {
-
-    /**
-     * serialVersionUID.
-     */
-    private static final long serialVersionUID = 1L;
     
-    /**
-     * pk
-     */
+    private static final long serialVersionUID = 1L;    
     private IndicacaoPk pk;
-    
-    /**
-     * pessoa
-     */
     private Pessoa pessoa;
-
-    /**
-     * The set of vencedor.
-     */
     private Set<Vencedor> vencedorSet;
 
-    /**
-     * Constructor.
-     */
     public Indicacao() {
-
     }
 
     public Indicacao(IndicacaoPk pk, Pessoa pessoa) {
@@ -57,40 +38,20 @@ public class Indicacao implements Serializable {
 
     public void setPessoa(Pessoa pessoa) {
         this.pessoa = pessoa;
-    }   
-    
+    }
 
-    /**
-     * Set the set of the vencedor.
-     *
-     * @param vencedorSet The set of vencedor
-     */
+    public Set<Vencedor> getVencedorSet() {
+        return vencedorSet;
+    }
+
     public void setVencedorSet(Set<Vencedor> vencedorSet) {
         this.vencedorSet = vencedorSet;
     }
 
-    /**
-     * Add the vencedor.
-     *
-     * @param vencedor vencedor
-     */
-    public void addVencedor(Vencedor vencedor) {
-        this.vencedorSet.add(vencedor);
-    }
-
-    /**
-     * Get the set of the vencedor.
-     *
-     * @return The set of vencedor
-     */
-    public Set<Vencedor> getVencedorSet() {
-        return this.vencedorSet;
-    }
-
     @Override
     public int hashCode() {
-        int hash = 7;
-        hash = 31 * hash + Objects.hashCode(this.pk);
+        int hash = 5;
+        hash = 97 * hash + Objects.hashCode(this.pk);
         return hash;
     }
 
@@ -106,9 +67,6 @@ public class Indicacao implements Serializable {
             return false;
         }
         final Indicacao other = (Indicacao) obj;
-        if (!Objects.equals(this.pk, other.pk)) {
-            return false;
-        }
-        return true;
-    }
+        return Objects.equals(this.pk, other.pk);
+    }    
 }

@@ -92,9 +92,6 @@ public class IndicacaoPk implements Serializable{
         if (!Objects.equals(this.categoria, other.categoria)) {
             return false;
         }
-        if (!Objects.equals(this.filme, other.filme)) {
-            return false;
-        }
-        return true;
+        return Objects.equals(this.filme, other.filme);
     }    
 }

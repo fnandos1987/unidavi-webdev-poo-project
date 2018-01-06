@@ -24,8 +24,8 @@ import java.util.logging.Logger;
 public class IndicacaoDao extends Dao implements IDao<IndicacaoPk, Indicacao> {
 
     private static final Logger LOGGER = Logger.getLogger(IndicacaoDao.class.getName());
-    private final String INSERT = "insert into indicacao(ano, catcodigo, filcodigo) values (?,?,?)";
-    private final String DELETE = "delete from indicacao where ano = ? and catcodigo = ? and filcodigo = ?";
+    private static final String INSERT = "insert into indicacao(ano, catcodigo, filcodigo) values (?,?,?)";
+    private static final String DELETE = "delete from indicacao where ano = ? and catcodigo = ? and filcodigo = ?";
 
     public IndicacaoDao(Connection connection) {
         super(connection);
@@ -33,17 +33,17 @@ public class IndicacaoDao extends Dao implements IDao<IndicacaoPk, Indicacao> {
 
     @Override
     public Boolean save(Indicacao entity) {
-        return execute(this.INSERT, entity.getPk().getAno(), entity.getPk().getCategoria().getCatCodigo(), entity.getPk().getFilme().getFilCodigo());
+        return execute(INSERT, entity.getPk().getAno(), entity.getPk().getCategoria().getCatCodigo(), entity.getPk().getFilme().getFilCodigo());
     }
 
     @Override
     public Boolean update(Indicacao entity) {
-        throw new UnsupportedOperationException("Update não implementado para indicação");
+        throw new UnsupportedOperationException("Update não suportado para indicação");
     }
 
     @Override
     public Boolean delete(Indicacao entity) {
-        return execute(this.DELETE, entity.getPk().getAno(), entity.getPk().getCategoria().getCatCodigo(), entity.getPk().getFilme().getFilCodigo());
+        return execute(DELETE, entity.getPk().getAno(), entity.getPk().getCategoria().getCatCodigo(), entity.getPk().getFilme().getFilCodigo());
     }
 
     @Override
@@ -55,11 +55,7 @@ public class IndicacaoDao extends Dao implements IDao<IndicacaoPk, Indicacao> {
         try {
             ResultSet rs = super.getAllByQuery(sql.toString());
             while (rs.next()) {
-                Categoria categoria = new Categoria(rs.getInt("catcodigo"), rs.getString("descricao"));
-                Filme filme = new Filme(rs.getInt("filcodigo"), rs.getString("titulo"));
-                Pessoa pessoa = new Pessoa(rs.getInt("pescodigo"), rs.getString("nome"));
-                IndicacaoPk pk = new IndicacaoPk(rs.getShort("ano"), categoria, filme);
-                array.add(new Indicacao(pk, pessoa));
+                array.add(this.getModelIndicacaoPreenchido(rs));
             }
         } catch (SQLException ex) {
             LOGGER.log(Level.SEVERE, ex.toString(), ex);
@@ -69,7 +65,7 @@ public class IndicacaoDao extends Dao implements IDao<IndicacaoPk, Indicacao> {
 
     @Override
     public Indicacao findById(IndicacaoPk id) {
-        Indicacao indicacao = new Indicacao();
+        Indicacao indicacao = null;
         try {
             StringBuilder sql = this.getSqlBase();
             sql.append("where indicacao.ano = ? ");
@@ -78,16 +74,11 @@ public class IndicacaoDao extends Dao implements IDao<IndicacaoPk, Indicacao> {
 
             ResultSet rs = super.getAllByQueryWithParameters(sql.toString(), id.getAno(), id.getCategoria().getCatCodigo(), id.getFilme().getFilCodigo());
             while (rs.next()) {
-                Categoria categoria = new Categoria(rs.getInt("catcodigo"), rs.getString("descricao"));
-                Filme filme = new Filme(rs.getInt("filcodigo"), rs.getString("titulo"));
-                Pessoa pessoa = new Pessoa(rs.getInt("pescodigo"), rs.getString("nome"));
-                IndicacaoPk pk = new IndicacaoPk(rs.getShort("ano"), categoria, filme);
-
-                indicacao.setPk(pk);
-                indicacao.setPessoa(pessoa);
+               indicacao = this.getModelIndicacaoPreenchido(rs);
             }
         } catch (SQLException ex) {
             LOGGER.log(Level.SEVERE, ex.toString(), ex);
+            indicacao = new Indicacao();
         }
         return indicacao;
     }
@@ -100,12 +91,8 @@ public class IndicacaoDao extends Dao implements IDao<IndicacaoPk, Indicacao> {
         sql.append("order by indicacao.filcodigo");
         try {
             ResultSet rs = super.getAllByQueryWithParameters(sql.toString(), catCodigo);
-            while (rs.next()) {
-                Categoria categoria = new Categoria(rs.getInt("catcodigo"), rs.getString("descricao"));
-                Filme filme = new Filme(rs.getInt("filcodigo"), rs.getString("titulo"));
-                Pessoa pessoa = new Pessoa(rs.getInt("pescodigo"), rs.getString("nome"));
-                IndicacaoPk pk = new IndicacaoPk(rs.getShort("ano"), categoria, filme);
-                array.add(new Indicacao(pk, pessoa));
+            while (rs.next()) {                
+                array.add(this.getModelIndicacaoPreenchido(rs));
             }
         } catch (SQLException ex) {
             LOGGER.log(Level.SEVERE, ex.toString(), ex);
@@ -133,5 +120,24 @@ public class IndicacaoDao extends Dao implements IDao<IndicacaoPk, Indicacao> {
         sql.append("left join pessoa");
         sql.append("on pessoa.pescodigo = indicacaoelenco.pescodigo");
         return sql;
+    }
+
+    private Indicacao getModelIndicacaoPreenchido(ResultSet rs) {
+        Indicacao indicacao = new Indicacao();
+
+        try {
+            Categoria categoria = new Categoria(rs.getInt("catcodigo"), rs.getString("descricao"));
+            Filme filme = new Filme(rs.getInt("filcodigo"), rs.getString("titulo"));
+            Pessoa pessoa = new Pessoa(rs.getInt("pescodigo"), rs.getString("nome"));
+            IndicacaoPk pk = new IndicacaoPk(rs.getShort("ano"), categoria, filme);
+
+            indicacao.setPk(pk);
+            indicacao.setPessoa(pessoa);
+
+        } catch (SQLException ex) {
+            LOGGER.log(Level.ALL, ex.toString(), ex);
+        }
+        
+        return indicacao;
     }
 }

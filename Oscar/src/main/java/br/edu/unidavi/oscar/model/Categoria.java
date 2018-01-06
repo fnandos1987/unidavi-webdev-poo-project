@@ -1,6 +1,7 @@
 package br.edu.unidavi.oscar.model;
 
 import java.io.Serializable;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -11,31 +12,20 @@ import java.util.Set;
  */
 public class Categoria implements Serializable {
 
-    /**
-     * serialVersionUID.
-     */
+    
     private static final long serialVersionUID = 1L;
 
-    /**
-     * catCodigo.
-     */
+    
     private Integer catCodigo;
 
-    /**
-     * descricao.
-     */
+    
     private String descricao;
 
-    /**
-     * The set of indicacao.
-     */
+    
     private Set<Indicacao> indicacaoSet;
 
-    /**
-     * Constructor.
-     */
+    
     public Categoria() {
-
     }
 
     public Categoria(Integer catCodigo, String descricao) {
@@ -43,83 +33,37 @@ public class Categoria implements Serializable {
         this.descricao = descricao;
     }
 
-    /**
-     * Set the catCodigo.
-     *
-     * @param catCodigo catCodigo
-     */
+    public Integer getCatCodigo() {
+        return catCodigo;
+    }
+
     public void setCatCodigo(Integer catCodigo) {
         this.catCodigo = catCodigo;
     }
 
-    /**
-     * Get the catCodigo.
-     *
-     * @return catCodigo
-     */
-    public Integer getCatCodigo() {
-        return this.catCodigo;
+    public String getDescricao() {
+        return descricao;
     }
 
-    /**
-     * Set the descricao.
-     *
-     * @param descricao descricao
-     */
     public void setDescricao(String descricao) {
         this.descricao = descricao;
     }
 
-    /**
-     * Get the descricao.
-     *
-     * @return descricao
-     */
-    public String getDescricao() {
-        return this.descricao;
+    public Set<Indicacao> getIndicacaoSet() {
+        return indicacaoSet;
     }
 
-    /**
-     * Set the set of the indicacao.
-     *
-     * @param indicacaoSet The set of indicacao
-     */
     public void setIndicacaoSet(Set<Indicacao> indicacaoSet) {
         this.indicacaoSet = indicacaoSet;
     }
 
-    /**
-     * Add the indicacao.
-     *
-     * @param indicacao indicacao
-     */
-    public void addIndicacao(Indicacao indicacao) {
-        this.indicacaoSet.add(indicacao);
-    }
-
-    /**
-     * Get the set of the indicacao.
-     *
-     * @return The set of indicacao
-     */
-    public Set<Indicacao> getIndicacaoSet() {
-        return this.indicacaoSet;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((catCodigo == null) ? 0 : catCodigo.hashCode());
-        return result;
+        int hash = 3;
+        hash = 97 * hash + Objects.hashCode(this.catCodigo);
+        return hash;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -131,15 +75,7 @@ public class Categoria implements Serializable {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        Categoria other = (Categoria) obj;
-        if (catCodigo == null) {
-            if (other.catCodigo != null) {
-                return false;
-            }
-        } else if (!catCodigo.equals(other.catCodigo)) {
-            return false;
-        }
-        return true;
-    }
-
+        final Categoria other = (Categoria) obj;
+        return Objects.equals(this.catCodigo, other.catCodigo);
+    }  
 }

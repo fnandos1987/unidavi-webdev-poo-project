@@ -29,7 +29,6 @@ public class Dao {
             }
 
             pstmt.execute();
-            pstmt.close();
             return true;
         } catch (SQLException ex) {
             LOGGER.log(Level.SEVERE, ex.toString(), ex);
@@ -58,7 +57,6 @@ public class Dao {
         ResultSet resul = null;
         try (PreparedStatement pstmt = getConnection().prepareStatement(sql)) {
             resul = pstmt.executeQuery();
-            pstmt.close();
         } catch (Exception ex) {
             LOGGER.log(Level.SEVERE, ex.toString(), ex);
         }
@@ -74,7 +72,6 @@ public class Dao {
             }
 
             resul = pstmt.executeQuery();
-            pstmt.close();
         } catch (Exception ex) {
             LOGGER.log(Level.SEVERE, ex.toString(), ex);
         }
