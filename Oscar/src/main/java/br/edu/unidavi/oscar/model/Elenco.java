@@ -14,10 +14,8 @@ import java.util.Objects;
  */
 public class Elenco implements Serializable {
 
-    
     private static final long serialVersionUID = 1L;
-    
-   
+
     private ElencoPk pk;
 
     public Elenco() {
@@ -38,8 +36,7 @@ public class Elenco implements Serializable {
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 41 * hash + Objects.hashCode(this.pk);
-        return hash;
+        return 41 * hash + Objects.hashCode(this.pk);
     }
 
     @Override

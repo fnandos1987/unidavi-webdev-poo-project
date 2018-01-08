@@ -2,7 +2,6 @@ package br.edu.unidavi.oscar.model;
 
 import java.io.Serializable;
 import java.util.Objects;
-import java.util.Set;
 
 /**
  * Model class of indicacao.
@@ -14,8 +13,7 @@ public class Indicacao implements Serializable {
     private static final long serialVersionUID = 1L;    
     private IndicacaoPk pk;
     private Pessoa pessoa;
-    private Set<Vencedor> vencedorSet;
-
+    
     public Indicacao() {
     }
 
@@ -40,33 +38,28 @@ public class Indicacao implements Serializable {
         this.pessoa = pessoa;
     }
 
-    public Set<Vencedor> getVencedorSet() {
-        return vencedorSet;
-    }
-
-    public void setVencedorSet(Set<Vencedor> vencedorSet) {
-        this.vencedorSet = vencedorSet;
-    }
-
     @Override
     public int hashCode() {
         int hash = 5;
-        hash = 97 * hash + Objects.hashCode(this.pk);
-        return hash;
+        return 97 * hash + Objects.hashCode(this.pk);
     }
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
         if (obj == null) {
             return false;
+        }
+        if (this == obj) {
+            return true;
         }
         if (getClass() != obj.getClass()) {
             return false;
         }
         final Indicacao other = (Indicacao) obj;
-        return Objects.equals(this.pk, other.pk);
-    }    
+        if (!Objects.equals(this.pk, other.pk)) {
+            return false;
+        }
+        return Objects.equals(this.pessoa, other.pessoa);
+    }
+    
 }

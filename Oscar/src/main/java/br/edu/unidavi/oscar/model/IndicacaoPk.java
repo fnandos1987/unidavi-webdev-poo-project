@@ -68,19 +68,16 @@ public class IndicacaoPk implements Serializable{
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 47 * hash + Objects.hashCode(this.ano);
-        hash = 47 * hash + Objects.hashCode(this.categoria);
-        hash = 47 * hash + Objects.hashCode(this.filme);
-        return hash;
+        return 47 * hash + (Objects.hashCode(this.ano) + Objects.hashCode(this.categoria) + Objects.hashCode(this.filme));
     }
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
         if (obj == null) {
             return false;
+        }
+        if (this == obj) {
+            return true;
         }
         if (getClass() != obj.getClass()) {
             return false;
