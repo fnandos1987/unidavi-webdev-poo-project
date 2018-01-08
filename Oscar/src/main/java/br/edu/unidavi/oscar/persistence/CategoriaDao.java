@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import br.edu.unidavi.oscar.model.Categoria;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -39,8 +40,8 @@ public class CategoriaDao extends Dao implements IDao<Integer, Categoria> {
     }
 
     @Override
-    public ArrayList<Categoria> findAll() {
-        ArrayList<Categoria> array = new ArrayList<>();
+    public List<Categoria> findAll() {
+        List<Categoria> array = new ArrayList<>();
 
         try {
             ResultSet rs = getAllByQuery(SELECT);

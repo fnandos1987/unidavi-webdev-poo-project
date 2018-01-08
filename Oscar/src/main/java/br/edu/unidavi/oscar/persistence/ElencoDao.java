@@ -13,6 +13,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -44,7 +45,7 @@ public class ElencoDao extends Dao implements IDao<ElencoPk, Elenco>{
     }
 
     @Override
-    public ArrayList<Elenco> findAll() {
+    public List<Elenco> findAll() {
         throw new UnsupportedOperationException(NOTSUPPORTED); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -53,7 +54,7 @@ public class ElencoDao extends Dao implements IDao<ElencoPk, Elenco>{
         throw new UnsupportedOperationException(NOTSUPPORTED); //To change body of generated methods, choose Tools | Templates.
     }
     
-    public ArrayList<Elenco> findAllByFilme(Integer filCodigo) {
+    public List<Elenco> findAllByFilme(Integer filCodigo) {
         StringBuilder sql = new StringBuilder("select filme.filcodigo,");
         sql.append("filme.titulo,");
         sql.append("pessoa.pescodigo,");
@@ -66,7 +67,7 @@ public class ElencoDao extends Dao implements IDao<ElencoPk, Elenco>{
         sql.append("where elenco.filcodigo = ?");
         sql.append("order by pessoa.pescodigo");
         
-        ArrayList<Elenco> array = new ArrayList<>();
+        List<Elenco> array = new ArrayList<>();
         try {
             ResultSet rs = super.getAllByQueryWithParameters(sql.toString(), filCodigo);
             while (rs.next()) {

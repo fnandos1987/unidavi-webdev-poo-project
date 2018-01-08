@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -43,8 +44,8 @@ public class FilmeDao extends Dao implements IDao<Integer, Filme> {
     }
 
     @Override
-    public ArrayList<Filme> findAll() {
-        ArrayList<Filme> array = new ArrayList<>();
+    public List<Filme> findAll() {
+        List<Filme> array = new ArrayList<>();
 
         try {
             ResultSet rs = getAllByQuery(SELECT);

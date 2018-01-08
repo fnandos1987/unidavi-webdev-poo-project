@@ -14,6 +14,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -45,8 +46,8 @@ public class VencedorDao extends Dao implements IDao<VencedorPk, Vencedor> {
     }
 
     @Override
-    public ArrayList<Vencedor> findAll() {
-        ArrayList<Vencedor> array = new ArrayList<>();
+    public List<Vencedor> findAll() {
+        List<Vencedor> array = new ArrayList<>();
         StringBuilder sql = new StringBuilder("select vencedor.ano,");
         sql.append("categoria.catcodigo,");
         sql.append("categoria.descricao,");
@@ -87,6 +88,6 @@ public class VencedorDao extends Dao implements IDao<VencedorPk, Vencedor> {
 
     @Override
     public Vencedor findById(VencedorPk object) {
-        throw new UnsupportedOperationException(NOTSUPPORTED); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException(NOTSUPPORTED);
     }
 }

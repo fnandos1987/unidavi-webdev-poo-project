@@ -14,6 +14,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -47,11 +48,11 @@ public class IndicacaoDao extends Dao implements IDao<IndicacaoPk, Indicacao> {
     }
 
     @Override
-    public ArrayList<Indicacao> findAll() {
+    public List<Indicacao> findAll() {
         StringBuilder sql = this.getSqlBase();
         sql.append("order by indicacao.filcodigo");
 
-        ArrayList<Indicacao> array = new ArrayList<>();
+        List<Indicacao> array = new ArrayList<>();
         try {
             ResultSet rs = super.getAllByQuery(sql.toString());
             while (rs.next()) {
@@ -83,8 +84,8 @@ public class IndicacaoDao extends Dao implements IDao<IndicacaoPk, Indicacao> {
         return indicacao;
     }
 
-    public ArrayList<Indicacao> findAllByCategoria(Integer catCodigo) {
-        ArrayList<Indicacao> array = new ArrayList<>();
+    public List<Indicacao> findAllByCategoria(Integer catCodigo) {
+        List<Indicacao> array = new ArrayList<>();
 
         StringBuilder sql = this.getSqlBase();
         sql.append("where indicacao.catcodigo = ?");

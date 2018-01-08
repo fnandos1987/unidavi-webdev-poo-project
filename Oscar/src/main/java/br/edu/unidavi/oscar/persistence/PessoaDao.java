@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -42,8 +43,8 @@ public class PessoaDao extends Dao implements IDao<Integer, Pessoa>{
     }
 
     @Override
-    public ArrayList<Pessoa> findAll() {
-        ArrayList<Pessoa> array = new ArrayList<>();
+    public List<Pessoa> findAll() {
+        List<Pessoa> array = new ArrayList<>();
 
         try {
             ResultSet rs = getAllByQuery(SELECT);
