@@ -21,7 +21,7 @@ public final class Conexao {
     public Connection getConnection() {
         try {
             Class.forName("org.postgresql.Driver");
-            return DriverManager.getConnection("jdbc:postgresql://localhost:5432/oscar", "postgres", "postgres");
+            return DriverManager.getConnection("jdbc:postgresql://localhost:5432/oscarprj2", "postgres", "postgres");
         } catch (ClassNotFoundException | SQLException ex) {
             LOGGER.log(Level.ALL, ex.toString(), ex);
         }

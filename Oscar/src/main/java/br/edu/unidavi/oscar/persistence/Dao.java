@@ -37,10 +37,10 @@ public class Dao {
     }
 
     protected int getSequence(String table, String column) {
-        StringBuilder sql = new StringBuilder("select");
-        sql.append("coalesce(max(");
+        StringBuilder sql = new StringBuilder(" select ");
+        sql.append(" coalesce(max( ");
         sql.append(column);
-        sql.append(")) + 1 as sequence from from");
+        sql.append(" )) + 1 as sequence from from ");
         sql.append(table);
         
         try (PreparedStatement pstmt = getConnection().prepareStatement(sql.toString()); ResultSet rs = pstmt.executeQuery()) {

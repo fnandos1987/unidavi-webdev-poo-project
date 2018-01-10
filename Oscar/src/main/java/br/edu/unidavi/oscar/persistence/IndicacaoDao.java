@@ -69,9 +69,9 @@ public class IndicacaoDao extends Dao implements IDao<IndicacaoPk, Indicacao> {
         Indicacao indicacao = null;
         try {
             StringBuilder sql = this.getSqlBase();
-            sql.append("where indicacao.ano = ? ");
-            sql.append("and indicacao.catcodigo = ?");
-            sql.append("and indicacao.filcodigo = ?");
+            sql.append(" where indicacao.ano = ? ");
+            sql.append(" and indicacao.catcodigo = ?");
+            sql.append(" and indicacao.filcodigo = ?");
 
             ResultSet rs = super.getAllByQueryWithParameters(sql.toString(), id.getAno(), id.getCategoria().getCatCodigo(), id.getFilme().getFilCodigo());
             while (rs.next()) {
@@ -102,24 +102,24 @@ public class IndicacaoDao extends Dao implements IDao<IndicacaoPk, Indicacao> {
     }
 
     private StringBuilder getSqlBase() {
-        StringBuilder sql = new StringBuilder("select indicacao.ano,");
-        sql.append("categoria.catcodigo,");
-        sql.append("categoria.descricao,");
-        sql.append("filme.filcodigo,");
-        sql.append("filme.titulo,");
-        sql.append("pessoa.pescodigo,");
-        sql.append("pessoa.nome");
-        sql.append("from indicacao");
-        sql.append("join categoria");
-        sql.append("on categoria.catcodigo = indicacao.catcodigo");
-        sql.append("join filme");
-        sql.append("on filme.filcodigo = indicacao.filcodigo");
-        sql.append("left join indicacaoelenco");
-        sql.append("on indicacaoelenco.ano = indicacao.ano");
-        sql.append("and indicacaoelenco.filcodigo = indicacao.filcodigo");
-        sql.append("and indicacaoelenco.catcodigo = indicacao.catcodigo");
-        sql.append("left join pessoa");
-        sql.append("on pessoa.pescodigo = indicacaoelenco.pescodigo");
+        StringBuilder sql = new StringBuilder(" select indicacao.ano, ");
+        sql.append(" categoria.catcodigo, ");
+        sql.append(" categoria.descricao, ");
+        sql.append(" filme.filcodigo, ");
+        sql.append(" filme.titulo, ");
+        sql.append(" pessoa.pescodigo, ");
+        sql.append(" pessoa.nome ");
+        sql.append(" from indicacao ");
+        sql.append(" join categoria ");
+        sql.append(" on categoria.catcodigo = indicacao.catcodigo ");
+        sql.append(" join filme ");
+        sql.append(" on filme.filcodigo = indicacao.filcodigo ");
+        sql.append(" left join indicacaoelenco ");
+        sql.append(" on indicacaoelenco.ano = indicacao.ano ");
+        sql.append(" and indicacaoelenco.filcodigo = indicacao.filcodigo ");
+        sql.append(" and indicacaoelenco.catcodigo = indicacao.catcodigo ");
+        sql.append(" left join pessoa ");
+        sql.append(" on pessoa.pescodigo = indicacaoelenco.pescodigo ");
         return sql;
     }
 

@@ -9,6 +9,8 @@ import br.edu.unidavi.oscar.util.Conexao;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -23,37 +25,35 @@ import javax.servlet.annotation.WebFilter;
  */
 @WebFilter(filterName = "ConnnectionFilter", urlPatterns = {"/*"})
 public class ConnnectionFilter implements Filter {
+    
+    private Connection connection;
 
-    /**
-     *
-     * @param request The servlet request we are processing
-     * @param response The servlet response we are creating
-     * @param chain The filter chain we are processing
-     *
-     * @exception IOException if an input/output error occurs
-     * @exception ServletException if a servlet error occurs
-     */
+    @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         try {
-            Connection connection = Conexao.getInstance().getConnection();
-
             request.setAttribute("conexao", connection);
-            chain.doFilter(request, response);
-            connection.close();
-            
-        } catch (SQLException e) {
+            chain.doFilter(request, response);                       
+        } catch (IOException | ServletException e) {
             throw new ServletException(e);
         }
+
     }
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-        throw new UnsupportedOperationException("Not supported yet.");        
+        try{
+            connection = Conexao.getInstance().getConnection();            
+        } catch (Exception ex){
+            Logger.getLogger(ConnnectionFilter.class.getName()).log(Level.SEVERE, ex.toString(), ex);
+        }
     }
 
     @Override
     public void destroy() {
-        throw new UnsupportedOperationException("Not supported yet.");        
+        try{
+            connection.close();          
+        } catch (SQLException ex){
+            Logger.getLogger(ConnnectionFilter.class.getName()).log(Level.SEVERE, ex.toString(), ex);
+        }               
     }
-
 }

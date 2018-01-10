@@ -20,7 +20,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 @WebServlet(name = "action", urlPatterns = {"/action"})
 public class ControllerServlet extends HttpServlet {
-    
+
     private static final Logger LOGGER = Logger.getLogger(ControllerServlet.class.getName());
 
     /**
@@ -95,5 +95,4 @@ public class ControllerServlet extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-
 }
